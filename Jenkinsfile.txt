@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage ("git") {
             steps {
-                git 'https://github.com/Mouni-ops/maven-hello-world.git'
+                git 'https://github.com/Mouni-ops/hello-world.git'
             }
         }
         stage ("builld") {
