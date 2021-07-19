@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    environment {
+    
+    def mavenHome = tool name: "maven", type: "maven"   /**it will try to get the maven path of where maven installed **/
+    def mavenCMD="${mavenHome}/bin/mvn "
+    }
+    stages {
+        stage ("git") {
+            steps {
+                git 'https://github.com/Mouni-ops/maven-hello-world.git'
+            }
+        }
+        stage ("builld") {
+            steps {
+		
+        	sh "${mavenCMD} clean package"
+                
+            }
+        }
+        stage ("deploy-warfile") {
+            steps {
+                sshagent(['Tomcat_user']) {
+                    //sh "scp -o StrictHostKeyChecking=no webapp/target/webapp.jar ec2-user@34.222.132.246:/opt/tomcat8/webapps"
+                    sh "scp -o StrictHostKeyChecking=no target/*.jar ubuntu@54.70.188.139:/opt/tomcat8/webapps" 
+    
+                }
+            }
+        }
+        
+    }
+    
+}
+
+
